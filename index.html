@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat Status</title>
+    <style>
+        :root {
+            --color-background: #2a2a2a;
+            --color-text: #ffffff;
+            --color-card: #2a2a2a;
+            --color-primary: #ffd1dc;
+            --color-primary-dark: #ffb6c1;
+            --color-undetected: #00ff00;
+            --color-detected: #ff0000;
+            --color-testing: #00ffff;
+            --color-updating: #ffa500;
+            --color-closed: #808080;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(255, 209, 220, 0.3);
+        }
+
+        .status-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, rgba(255, 209, 220, 0.1) 0%, rgba(255, 182, 193, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .game-sections {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .game-section {
+            background: linear-gradient(135deg, rgba(255, 209, 220, 0.1) 0%, rgba(255, 182, 193, 0.15) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 209, 220, 0.2);
+            box-shadow: 0 4px 15px rgba(255, 209, 220, 0.1);
+        }
+
+        .game-section h2 {
+            margin-top: 0;
+            color: var(--color-primary);
+            border-bottom: 2px solid rgba(255, 209, 220, 0.2);
+            padding-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 209, 220, 0.3);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, rgba(255, 209, 220, 0.05) 0%, rgba(255, 182, 193, 0.1) 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 209, 220, 0.1);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 209, 220, 0.2);
+            border: 1px solid rgba(255, 209, 220, 0.3);
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .product-header h3 {
+            margin: 0;
+            color: var(--color-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            min-width: 85px;
+            text-align: center;
+        }
+
+        .undetected, .status-badge.undetected {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(0, 255, 0, 0.2) 100%);
+            color: #90EE90;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .detected, .status-badge.detected {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(255, 0, 0, 0.2) 100%);
+            color: #FFB6C1;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
+        .testing, .status-badge.testing {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0.2) 100%);
+            color: #AFEEEE;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .updating, .status-badge.updating {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 165, 0, 0.2) 100%);
+            color: #FFD700;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .closed, .status-badge.closed {
+            background: linear-gradient(135deg, rgba(128, 128, 128, 0.1) 0%, rgba(128, 128, 128, 0.2) 100%);
+            color: #D3D3D3;
+            border: 1px solid rgba(128, 128, 128, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .status-legend {
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .game-section {
+                padding: 1rem;
+            }
+
+            .product-header {
+                flex-wrap: wrap;
+            }
+
+            .status-badge {
+                margin-top: 0.5rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>System Status</h1>
+        
+        <div class="status-legend">
+            <div class="status-item">
+                <span class="status-dot undetected"></span>
+                <span>Undetected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-dot detected"></span>
+                <span>Detected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-dot testing"></span>
+                <span>Testing</span>
+            </div>
+            <div class="status-item">
+                <span class="status-dot updating"></span>
+                <span>Updating</span>
+            </div>
+            <div class="status-item">
+                <span class="status-dot closed"></span>
+                <span>Closed</span>
+            </div>
+        </div>
+
+        <div class="game-sections">
+            <!-- Valorant Section -->
+            <div class="game-section">
+                <h2>Valorant</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Slotted</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Forge</h3>
+                            <span class="status-badge updating">Updating</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>IChams</h3>
+                            <span class="status-badge updating">Updating</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Private</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Onyx</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CS2 Section -->
+            <div class="game-section">
+                <h2>CS2</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Gamesense</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Neverlose</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Fatality</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>CompKiller</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Plague</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Memesense</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Midnight</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Primordial</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Nixware</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Predator</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Xone</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- League of Legends Section -->
+            <div class="game-section">
+                <h2>League of Legends</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>LegendSense</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>BGX Private</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>BGX</h3>
+                            <span class="status-badge testing">Testing</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>EngineSoul</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Hanbot</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Toirscript</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rust Section -->
+            <div class="game-section">
+                <h2>Rust</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Disconnect</h3>
+                            <span class="status-badge testing">Testing</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Fluent</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Exodus</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Dullwave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Private</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fortnite Section -->
+            <div class="game-section">
+                <h2>Fortnite</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Disconnect</h3>
+                            <span class="status-badge testing">Testing</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Exodus</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Stealth</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Solaris</h3>
+                            <span class="status-badge updating">Updating</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spoofer Section -->
+            <div class="game-section">
+                <h2>Spoofer</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>IChams</h3>
+                            <span class="status-badge updating">Updating</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Void</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Kernel</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Verse</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Stealth</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Exception</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
