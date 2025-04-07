@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cheat Status</title>
+    <title>Game Status</title>
     <style>
         :root {
             --color-background: #2a2a2a;
@@ -41,6 +40,34 @@
             margin-bottom: 2rem;
             color: var(--color-primary);
             text-shadow: 0 0 10px rgba(255, 209, 220, 0.3);
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 209, 220, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px rgba(255, 209, 220, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .status-legend {
@@ -81,6 +108,10 @@
             box-shadow: 0 4px 15px rgba(255, 209, 220, 0.1);
         }
 
+        .game-section.hidden {
+            display: none;
+        }
+
         .game-section h2 {
             margin-top: 0;
             color: var(--color-primary);
@@ -91,7 +122,7 @@
 
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
 
@@ -121,7 +152,7 @@
         .product-header h3 {
             margin: 0;
             color: var(--color-primary);
-            font-size: 0.85rem;
+            font-size: 1.1rem;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
@@ -167,6 +198,12 @@
             border: 1px solid rgba(128, 128, 128, 0.3);
         }
 
+        @media (max-width: 1024px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -181,6 +218,10 @@
                 padding: 1rem;
             }
 
+            .products {
+                grid-template-columns: 1fr;
+            }
+
             .product-header {
                 flex-wrap: wrap;
             }
@@ -190,12 +231,21 @@
                 width: 100%;
                 text-align: center;
             }
+
+            .search-input {
+                font-size: 0.9rem;
+                padding: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>System Status</h1>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for games..." id="searchInput">
+        </div>
         
         <div class="status-legend">
             <div class="status-item">
@@ -234,7 +284,7 @@
                     <div class="product-card">
                         <div class="product-header">
                             <h3>Forge</h3>
-                            <span class="status-badge updating">Updating</span>
+                            <span class="status-badge undetected">Undetected</span>
                         </div>
                     </div>
                     <div class="product-card">
@@ -442,6 +492,200 @@
                 </div>
             </div>
 
+            <!-- Marvel Rivals Section -->
+            <div class="game-section">
+                <h2>Marvel Rivals</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Byster</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Stealth</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Matcha</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Unicore</h3>
+                            <span class="status-badge testing">Testing</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Private</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Dullwave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call of Duty Section -->
+            <div class="game-section">
+                <h2>Call of Duty</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Midnight</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>External</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Dullwave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dead by Daylight Section -->
+            <div class="game-section">
+                <h2>Dead by Daylight</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Exception</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apex Legends Section -->
+            <div class="game-section">
+                <h2>Apex Legends</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Exodus</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Dullwave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUBG Section -->
+            <div class="game-section">
+                <h2>PUBG</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Desync</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fragpunk Section -->
+            <div class="game-section">
+                <h2>Fragpunk</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Byster</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Dullwave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FiveM Section -->
+            <div class="game-section">
+                <h2>FiveM</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>TZ</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>TZX</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Unicore</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roblox Section -->
+            <div class="game-section">
+                <h2>Roblox</h2>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>AWPGG</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Wave</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Zenith</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Matcha</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <h3>Seliware</h3>
+                            <span class="status-badge undetected">Undetected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Spoofer Section -->
             <div class="game-section">
                 <h2>Spoofer</h2>
@@ -489,6 +733,29 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const gameSections = document.querySelectorAll('.game-section');
+
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                gameSections.forEach(section => {
+                    const gameTitle = section.querySelector('h2').textContent.toLowerCase();
+                    const products = section.querySelectorAll('.product-card h3');
+                    let hasMatch = gameTitle.includes(searchTerm);
+
+                    // Also search through product names
+                    products.forEach(product => {
+                        if (product.textContent.toLowerCase().includes(searchTerm)) {
+                            hasMatch = true;
+                        }
+                    });
+
+                    section.style.display = hasMatch ? 'block' : 'none';
+                });
+            });
+
+            // Hover effects for cards
             const cards = document.querySelectorAll('.product-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
